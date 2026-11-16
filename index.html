@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nish Mehta Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: the portfolio reads like an API reference. A left rail lists
+   the endpoints; each section opens with a method + path row. */
+:root {
+  --bg: #f1f4f0;
+  --surface: #ffffff;
+  --ink: #15201c;
+  --muted: #5a6964;
+  --line: #d3dbd5;
+  --accent: #0a705e;
+  --accent-soft: #dcefe9;
+  --post: #9a5a06;
+  --post-soft: #f6e8cf;
+  --code-bg: #14201c;
+  --code-ink: #dbe8e2;
+  --code-key: #7fd6bf;
+  --code-str: #f2c879;
+  --font-display: "Bricolage Grotesque", "Arial Narrow", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0f1614;
+    --surface: #17211e;
+    --ink: #e3ebe6;
+    --muted: #96a8a1;
+    --line: #2a3833;
+    --accent: #56cfb0;
+    --accent-soft: #17352e;
+    --post: #e9b458;
+    --post-soft: #3a2d12;
+    --code-bg: #0a100e;
+    --code-ink: #dbe8e2;
+    --code-key: #7fd6bf;
+    --code-str: #f2c879;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f1614;
+  --surface: #17211e;
+  --ink: #e3ebe6;
+  --muted: #96a8a1;
+  --line: #2a3833;
+  --accent: #56cfb0;
+  --accent-soft: #17352e;
+  --post: #e9b458;
+  --post-soft: #3a2d12;
+  --code-bg: #0a100e;
+  --code-ink: #dbe8e2;
+  --code-key: #7fd6bf;
+  --code-str: #f2c879;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+
+/* Placeholder text the owner still needs to replace */
+.fill {
+  background: var(--post-soft);
+  color: var(--post);
+  border-bottom: 1px dashed var(--post);
+  padding: 0 3px;
+  border-radius: 3px;
+}
+
+.draft {
+  background: var(--post-soft);
+  color: var(--post);
+  font-size: 14px;
+  padding: 8px 20px;
+  text-align: center;
+}
+
+.shell {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 56px;
+}
+
+/* Left rail */
+.rail {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.rail-title {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.rail-title strong { color: var(--ink); font-weight: 600; font-size: 15px; }
+.rail nav { display: flex; flex-direction: column; gap: 4px; }
+.rail nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.rail nav a:hover { background: var(--surface); }
+
+.method {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  min-width: 42px;
+  text-align: center;
+}
+.method.post { background: var(--post-soft); color: var(--post); }
+
+main { display: flex; flex-direction: column; gap: 72px; padding-top: 40px; min-width: 0; }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; align-items: center; }
+.hero h1 {
+  font-size: clamp(44px, 7vw, 84px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+.hero h1 .fill { padding: 0 8px; }
+.hero p { margin: 20px 0 0; font-size: 20px; max-width: 34ch; color: var(--muted); }
+.hero p strong { color: var(--ink); font-weight: 600; }
+.hero-links { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn:hover { opacity: 0.85; }
+
+.response {
+  background: var(--code-bg);
+  color: var(--code-ink);
+  border-radius: 12px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+  overflow: hidden;
+}
+.response-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 13px;
+}
+.response-bar .ok { color: var(--code-key); }
+.response pre { margin: 0; padding: 16px; overflow-x: auto; font: inherit; }
+.k { color: var(--code-key); }
+.s { color: var(--code-str); }
+
+/* Sections */
+.endpoint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+.endpoint h2 { font-family: var(--font-mono); font-size: 22px; font-weight: 600; }
+.endpoint span.desc { color: var(--muted); font-size: 15px; }
+.endpoint .method { font-size: 12px; align-self: center; }
+
+.prose { max-width: 65ch; display: flex; flex-direction: column; gap: 14px; }
+.prose p { margin: 0; }
+
+.projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+.project {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.project.slot { background: transparent; border-style: dashed; }
+.project.featured { grid-column: 1 / -1; }
+.project.featured h3 { font-size: clamp(24px, 3.4vw, 32px); max-width: 24ch; }
+.project.featured p { max-width: 68ch; }
+.stats { display: flex; flex-wrap: wrap; gap: 12px 40px; margin: 8px 0 0; padding-top: 14px; border-top: 1px solid var(--line); }
+.stats dt { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.stats dd { margin: 0; font-family: var(--font-display); font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stats dd small { font-family: var(--font-mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+.project p.note { font-family: var(--font-mono); font-size: 12px; }
+.project h3 { font-size: 22px; font-weight: 700; line-height: 1.15; }
+.project p { margin: 0; font-size: 15px; color: var(--muted); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 8px; }
+.tags span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.project .kind { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+
+.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0 32px; margin: 0; }
+.skills div { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.skills dt { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.skills dd { margin: 4px 0 0; font-family: var(--font-display); font-size: 22px; font-weight: 700; }
+
+.contact { display: flex; flex-direction: column; gap: 0; max-width: 640px; }
+.contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.contact-row .label { font-family: var(--font-mono); font-size: 13px; color: var(--muted); min-width: 90px; }
+.contact-row .value { font-family: var(--font-mono); font-size: 15px; flex: 1; overflow-wrap: anywhere; }
+.copy {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.job { position: relative; padding: 0 0 26px 24px; max-width: 72ch; border-left: 2px solid var(--line); margin-left: 5px; }
+.job:last-child { padding-bottom: 4px; }
+.job::before { content: ""; position: absolute; left: -7px; top: 9px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--bg); }
+
+.job header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+.job h3 { font-size: 24px; font-weight: 700; }
+.job .where { color: var(--accent); font-weight: 600; }
+.job .when { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.job ul { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+
+.status { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px; padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-family: var(--font-mono); font-size: 13px; color: var(--ink); max-width: none; }
+.hero p.status { margin: 0 0 18px; font-size: 13px; max-width: none; color: var(--ink); }
+.status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.rail nav a[aria-current="true"] { background: var(--surface); box-shadow: inset 2px 0 0 var(--accent); }
+.chart { margin: 10px 0 0; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
+.chart figcaption { font-size: 15px; font-weight: 600; color: var(--ink); }
+.bars { display: flex; flex-direction: column; gap: 6px; }
+.bar-row { display: grid; grid-template-columns: 190px minmax(0, 1fr); align-items: center; gap: 12px; padding: 2px 0; border-radius: 4px; }
+.bar-row:hover { background: var(--bg); }
+.bar-label { font-size: 14px; color: var(--ink); text-align: right; }
+.bar-track { display: flex; align-items: center; gap: 8px; padding-right: 56px; }
+.bar { display: block; flex: none; height: 16px; background: var(--accent); border-radius: 0 4px 4px 0; }
+.bar-row.base .bar { opacity: 0.4; }
+.bar-value { font-family: var(--font-mono); font-size: 13px; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.chart details summary { cursor: pointer; font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
+.table-wrap { overflow-x: auto; margin-top: 10px; }
+.chart table { border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; min-width: 420px; }
+.chart th, .chart td { padding: 6px 14px 6px 0; border-bottom: 1px solid var(--line); text-align: right; }
+.chart th:first-child { text-align: left; font-weight: 500; }
+.chart thead th { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-weight: 500; }
+.years-title { color: var(--ink) !important; font-weight: 600; }
+.years .stats { border-top: 0; padding-top: 4px; }
+.years .stats dd { font-size: 24px; }
+@media (max-width: 560px) {
+  .bar-row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .bar-label { text-align: left; }
+}
+
+footer { color: var(--muted); font-family: var(--font-mono); font-size: 13px; }
+
+@media (max-width: 820px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .rail { position: static; padding-top: 24px; gap: 14px; }
+  .rail nav { flex-direction: row; flex-wrap: wrap; }
+  .rail nav a { background: var(--surface); }
+  main { gap: 56px; padding-top: 32px; }
+  .hero { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* --- polish layer --- */
+.hero { padding-bottom: 8px; }
+.hero h1 { font-size: clamp(52px, 8vw, 96px); }
+.response { box-shadow: 0 18px 40px -22px rgba(10, 40, 32, 0.55); min-height: 300px; }
+.response-tabs { display: flex; gap: 4px; padding: 10px 10px 0; }
+.tab { font-family: var(--font-mono); font-size: 13px; padding: 6px 12px; border-radius: 6px 6px 0 0; border: 0; background: transparent; color: var(--code-ink); opacity: 0.6; cursor: pointer; }
+.tab:hover { opacity: 0.9; }
+.tab[aria-pressed="true"] { opacity: 1; background: rgba(255, 255, 255, 0.1); color: var(--code-key); }
+.tab:focus-visible { outline-color: var(--code-key); }
+.facts { grid-column: 1 / -1; list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.facts li { display: flex; flex-direction: column; gap: 2px; padding: 16px 20px 16px 0; }
+.facts strong { font-family: var(--font-display); font-size: 19px; font-weight: 700; }
+.facts span { font-size: 14px; color: var(--muted); }
+.endpoint { position: relative; }
+.endpoint h2 { font-size: 24px; }
+section[id] { scroll-margin-top: 24px; }
+.project { transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
+.project:not(.featured):hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 14px 28px -20px rgba(10, 40, 32, 0.5); }
+.project.featured { padding: 28px; border-top: 4px solid var(--accent); }
+a.arrow { font-weight: 600; text-decoration: none; }
+a.arrow:hover { text-decoration: underline; }
+.skill-rows { display: flex; flex-direction: column; }
+.skill-row { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 8px 20px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.skill-key { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { font-size: 15px; font-weight: 500; padding: 5px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+.cta { background: var(--code-bg); color: var(--code-ink); border-radius: 16px; padding: clamp(24px, 5vw, 44px); display: flex; flex-direction: column; gap: 16px; }
+.cta h3 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; max-width: 20ch; }
+.cta p { margin: 0; max-width: 52ch; opacity: 0.8; }
+.cta-email { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 17px; color: var(--code-key); overflow-wrap: anywhere; }
+.cta .copy { background: var(--code-key); border-color: var(--code-key); color: var(--code-bg); font-weight: 600; }
+.cta-links { display: flex; flex-wrap: wrap; gap: 20px; font-family: var(--font-mono); font-size: 14px; }
+.cta-links a { color: var(--code-ink); }
+.cta a:focus-visible, .cta button:focus-visible { outline-color: var(--code-key); }
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 8px; }
+@media (prefers-reduced-motion: reduce) { .project { transition: none; } }
+@media (max-width: 560px) {
+  .skill-row { grid-template-columns: minmax(0, 1fr); }
+  .response { min-height: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="rail">
+    <div class="rail-title">
+      <strong>nish-mehta-api</strong>
+      <span>v1.0 · reference</span>
+    </div>
+    <nav aria-label="Sections">
+      <a href="#about"><span class="method">GET</span>/about</a>
+      <a href="#experience"><span class="method">GET</span>/experience</a>
+      <a href="#projects"><span class="method">GET</span>/projects</a>
+      <a href="#skills"><span class="method">GET</span>/skills</a>
+      <a href="#education"><span class="method">GET</span>/education</a>
+      <a href="#contact"><span class="method post">POST</span>/contact</a>
+    </nav>
+  </aside>
+
+  <main>
+    <section class="hero" aria-label="Introduction">
+      <div>
+        <p class="status"><span class="dot" aria-hidden="true"></span>Open to graduate roles</p>
+        <h1>Nish Mehta</h1>
+        <p>Data science MSc graduate from the <strong>University of Greenwich</strong>. I build data and AI solutions with <strong>Python</strong>, <strong>SQL</strong> and <strong>machine learning</strong>.</p>
+        <div class="hero-links">
+          <a class="btn" href="#projects">See projects</a>
+          <a class="btn ghost" href="#contact">Get in touch</a>
+        </div>
+      </div>
+      <div class="response">
+        <div class="response-tabs" role="group" aria-label="Try an endpoint">
+          <button type="button" class="tab" data-ep="me" aria-pressed="true">/me</button>
+          <button type="button" class="tab" data-ep="skills" aria-pressed="false">/skills</button>
+          <button type="button" class="tab" data-ep="projects" aria-pressed="false">/projects</button>
+        </div>
+        <div class="response-bar"><span id="resp-path">GET /me</span><span class="ok">200 OK</span></div>
+<pre id="resp-body" aria-live="polite">{
+  <span class="k">"name"</span>: <span class="s">"Nish Mehta"</span>,
+  <span class="k">"field"</span>: <span class="s">"Data Science"</span>,
+  <span class="k">"stack"</span>: [<span class="s">"Python"</span>, <span class="s">"SQL"</span>, <span class="s">"ML"</span>],
+  <span class="k">"focus"</span>: [<span class="s">"GenAI"</span>, <span class="s">"AI agents"</span>, <span class="s">"MCP"</span>],
+  <span class="k">"based_in"</span>: <span class="s">"Ahmedabad, India"</span>,
+  <span class="k">"open_to"</span>: <span class="s">"roles in London"</span>
+}</pre>
+      </div>
+      <ul class="facts">
+        <li><strong>MSc Data Science</strong><span>University of Greenwich, 2026</span></li>
+        <li><strong>Demand forecasting</strong><span>Six models tested on GB data, 2001 to 2025</span></li>
+        <li><strong>Data science internship</strong><span>WeblineIndia, six months</span></li>
+      </ul>
+    </section>
+
+    <section id="about">
+      <div class="endpoint">
+        <span class="method">GET</span>
+        <h2>/about</h2>
+        <span class="desc">Who I am and what I work on</span>
+      </div>
+      <div class="prose">
+        <p>I completed my MSc in Data Science at the University of Greenwich in 2026, after a B.Tech in Computer Engineering. My focus is practical: using machine learning and analytics to solve problems people really have.</p>
+        <p>I work with Python, SQL and modern AI tools to process and analyse complex datasets, build data pipelines and automate workflows. During my internship at WeblineIndia I cleaned and transformed data in PostgreSQL and built an AI pipeline that automated document processing.</p>
+        <p>My dissertation compared Transformer, LSTM and XGBoost models for forecasting Great Britain's electricity demand. I'm now looking for graduate roles in data science, machine learning and data analytics, and I'm open to opportunities in London.</p>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="endpoint">
+        <span class="method">GET</span>
+        <h2>/experience</h2>
+        <span class="desc">Where I've worked</span>
+      </div>
+      <article class="job">
+        <header>
+          <h3>Data Science Intern</h3>
+          <span class="where">WeblineIndia</span>
+          <span class="when">Jan 2025 – Jun 2025</span>
+        </header>
+        <ul>
+          <li>Cleaned and transformed structured datasets in PostgreSQL, improving data quality for downstream analysis.</li>
+          <li>Wrote optimised SQL queries for data extraction, manipulation and validation.</li>
+          <li>Designed and built a PDF processing pipeline with the ChatGPT APIs to extract structured text and separate images.</li>
+          <li>Automated document processing tasks, cutting manual effort and making the workflows easier to scale.</li>
+          <li>Worked with analytics and development teams to improve data accessibility.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="projects">
+      <div class="endpoint">
+        <span class="method">GET</span>
+        <h2>/projects</h2>
+        <span class="desc">Things I've built or worked on</span>
+      </div>
+      <div class="projects">
+        <article class="project featured">
+          <span class="kind">MSc dissertation · 2026</span>
+          <h3>Forecasting Great Britain's electricity demand with Transformers</h3>
+          <p>Does a Transformer beat simpler models at short-term demand forecasting? I built a full pipeline on NESO National Demand data from 2001 to 2025, using the previous seven days (336 half-hours) to predict the next 24 hours (48 half-hours), and compared six approaches from naive baselines to XGBoost, LSTM and a Transformer.</p>
+          <p>On unseen 2023 to 2025 data, XGBoost came out ahead. The Transformer clearly beat the seasonal baselines and stayed competitive, but more model complexity did not buy better accuracy. The project ships with automated integrity tests and an interactive Streamlit dashboard.</p>
+          <figure class="chart">
+            <figcaption>Mean absolute error by model, 2023 to 2025 test set (MW). Shorter is better.</figcaption>
+            <div class="bars" role="img" aria-label="Bar chart of mean absolute error for six forecasting models. XGBoost is lowest at 1,694 megawatts and weekly seasonal naive is highest at 2,925.">
+            <div class="bar-row " title="XGBoost: MAE 1,694 MW, RMSE 2,708.83 MW, sMAPE 6.40%">
+              <span class="bar-label">XGBoost</span>
+              <span class="bar-track"><span class="bar" style="width:56.5%"></span><span class="bar-value">1,694</span></span>
+            </div>
+            <div class="bar-row " title="LSTM: MAE 1,744 MW, RMSE 2,522.65 MW, sMAPE 6.70%">
+              <span class="bar-label">LSTM</span>
+              <span class="bar-track"><span class="bar" style="width:58.1%"></span><span class="bar-value">1,744</span></span>
+            </div>
+            <div class="bar-row " title="Transformer: MAE 1,780 MW, RMSE 2,830.67 MW, sMAPE 6.78%">
+              <span class="bar-label">Transformer</span>
+              <span class="bar-track"><span class="bar" style="width:59.3%"></span><span class="bar-value">1,780</span></span>
+            </div>
+            <div class="bar-row base" title="Statistical autoregression: MAE 1,996 MW, RMSE 2,958.84 MW, sMAPE 7.51%">
+              <span class="bar-label">Statistical autoregression</span>
+              <span class="bar-track"><span class="bar" style="width:66.5%"></span><span class="bar-value">1,996</span></span>
+            </div>
+            <div class="bar-row base" title="Daily naive: MAE 2,174 MW, RMSE 3,190.03 MW, sMAPE 8.47%">
+              <span class="bar-label">Daily naive</span>
+              <span class="bar-track"><span class="bar" style="width:72.5%"></span><span class="bar-value">2,174</span></span>
+            </div>
+            <div class="bar-row base" title="Weekly seasonal naive: MAE 2,925 MW, RMSE 4,451.83 MW, sMAPE 11.03%">
+              <span class="bar-label">Weekly seasonal naive</span>
+              <span class="bar-track"><span class="bar" style="width:97.5%"></span><span class="bar-value">2,925</span></span>
+            </div>
+            </div>
+            <p class="note">1,096 forecast days, 52,608 half-hour predictions per model. Pale bars are baselines.</p>
+            <details>
+              <summary>Show all metrics as a table</summary>
+              <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Model</th><th scope="col">MAE (MW)</th><th scope="col">RMSE (MW)</th><th scope="col">sMAPE (%)</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">XGBoost</th><td>1,694.09</td><td>2,708.83</td><td>6.40</td></tr>
+                <tr><th scope="row">LSTM</th><td>1,744.00</td><td>2,522.65</td><td>6.70</td></tr>
+                <tr><th scope="row">Transformer</th><td>1,780.17</td><td>2,830.67</td><td>6.78</td></tr>
+                <tr><th scope="row">Statistical autoregression</th><td>1,996.15</td><td>2,958.84</td><td>7.51</td></tr>
+                <tr><th scope="row">Daily naive</th><td>2,174.35</td><td>3,190.03</td><td>8.47</td></tr>
+                <tr><th scope="row">Weekly seasonal naive</th><td>2,925.46</td><td>4,451.83</td><td>11.03</td></tr>
+                </tbody>
+              </table>
+              </div>
+            </details>
+          </figure>
+          <div class="years">
+            <p class="years-title">No single model won every year. Lowest MAE by test year:</p>
+            <dl class="stats">
+              <div><dt>2023</dt><dd>Transformer <small>1,209 MW</small></dd></div>
+              <div><dt>2024</dt><dd>XGBoost <small>1,228 MW</small></dd></div>
+              <div><dt>2025</dt><dd>LSTM <small>2,301 MW</small></dd></div>
+            </dl>
+          </div>
+          <div class="tags"><span>Python</span><span>Time series</span><span>Transformer</span><span>LSTM</span><span>XGBoost</span><span>Streamlit</span></div>
+        </article>
+        <article class="project">
+          <span class="kind">Personal · prototype</span>
+          <h3>SupportPilot</h3>
+          <p>An AI customer-support agent prototype. It grounds answers in policy documents with retrieval over pgvector, uses order and customer tools within set limits, and needs human approval before any consequential write.</p>
+          <p><a class="arrow" href="https://github.com/NishMehta34/supportpilot">View the code on GitHub <span aria-hidden="true">↗</span></a></p>
+          <div class="tags"><span>FastAPI</span><span>LangGraph</span><span>RAG</span><span>MCP</span><span>Docker</span></div>
+        </article>
+        <article class="project">
+          <span class="kind">WeblineIndia</span>
+          <h3>AI document pipeline</h3>
+          <p>A pipeline that takes PDFs, extracts structured text with the ChatGPT APIs and separates out the images, replacing a manual process.</p>
+          <div class="tags"><span>Python</span><span>LLM APIs</span><span>Automation</span></div>
+        </article>
+        <article class="project">
+          <span class="kind">Work</span>
+          <h3>Property platform</h3>
+          <p>Feature work on a real-estate app with separate backend and frontend repositories, including amenity categories for listings.</p>
+          <div class="tags"><span>Backend</span><span>Frontend</span><span>GitLab</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="endpoint">
+        <span class="method">GET</span>
+        <h2>/skills</h2>
+        <span class="desc">What I work with</span>
+      </div>
+      <div class="skill-rows">
+        <div class="skill-row"><span class="skill-key">languages</span><ul class="chips"><li>Python</li><li>SQL</li></ul></div>
+        <div class="skill-row"><span class="skill-key">machine learning</span><ul class="chips"><li>Time-series forecasting</li><li>XGBoost</li><li>LSTM</li><li>Transformers</li></ul></div>
+        <div class="skill-row"><span class="skill-key">generative ai</span><ul class="chips"><li>AI agents</li><li>RAG</li><li>Model Context Protocol</li><li>LLM APIs</li><li>LangGraph</li></ul></div>
+        <div class="skill-row"><span class="skill-key">data</span><ul class="chips"><li>PostgreSQL</li><li>pgvector</li><li>Data pipelines</li></ul></div>
+        <div class="skill-row"><span class="skill-key">apps and tooling</span><ul class="chips"><li>FastAPI</li><li>Streamlit</li><li>Docker</li><li>Git</li></ul></div>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="endpoint">
+        <span class="method">GET</span>
+        <h2>/education</h2>
+        <span class="desc">Where I studied</span>
+      </div>
+      <article class="job">
+        <header>
+          <h3>MSc Data Science</h3>
+          <span class="where">University of Greenwich</span>
+          <span class="when">Sep 2025 – Sep 2026</span>
+        </header>
+        <ul><li>Dissertation: Transformer-based forecasting of Great Britain electricity demand for sustainable energy planning.</li></ul>
+      </article>
+      <article class="job">
+        <header>
+          <h3>B.Tech Computer Engineering</h3>
+          <span class="where">Indus University, Ahmedabad</span>
+        </header>
+      </article>
+    </section>
+
+    <section id="contact">
+      <div class="endpoint">
+        <span class="method post">POST</span>
+        <h2>/contact</h2>
+        <span class="desc">How to reach me</span>
+      </div>
+      <div class="cta">
+        <h3>Hiring for data science or ML? I'd like to hear about it.</h3>
+        <p>I'm open to graduate roles and happy to walk through the forecasting project or SupportPilot in detail.</p>
+        <div class="cta-email">
+          <span id="email-value">nishlovestennis@gmail.com</span>
+          <button class="copy" id="copy-email" type="button">Copy</button>
+        </div>
+        <div class="cta-links">
+          <a href="https://www.linkedin.com/in/nish-mehta-889553198">LinkedIn <span aria-hidden="true">↗</span></a>
+          <a href="https://github.com/NishMehta34">GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <footer><span>© <span id="year">2026</span> Nish Mehta</span><a href="#about">Back to top</a></footer>
+  </main>
+</div>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+var copyBtn = document.getElementById("copy-email");
+copyBtn.addEventListener("click", function () {
+  var text = document.getElementById("email-value").textContent.trim();
+  var done = function (label) {
+    copyBtn.textContent = label;
+    setTimeout(function () { copyBtn.textContent = "Copy"; }, 1500);
+  };
+  try {
+    navigator.clipboard.writeText(text).then(function () { done("Copied"); }, function () { done("Select to copy"); });
+  } catch (e) {
+    done("Select to copy");
+  }
+});
+var links = {};
+document.querySelectorAll(".rail nav a").forEach(function (a) { links[a.getAttribute("href").slice(1)] = a; });
+if ("IntersectionObserver" in window) {
+  var spy = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        Object.keys(links).forEach(function (k) { links[k].removeAttribute("aria-current"); });
+        if (links[e.target.id]) links[e.target.id].setAttribute("aria-current", "true");
+      }
+    });
+  }, { rootMargin: "-20% 0px -70% 0px" });
+  document.querySelectorAll("main section[id]").forEach(function (sec) { spy.observe(sec); });
+}
+var endpoints = {
+  me: { name: "Nish Mehta", field: "Data Science", stack: ["Python", "SQL", "ML"], focus: ["GenAI", "AI agents", "MCP"], based_in: "Ahmedabad, India", open_to: "roles in London" },
+  skills: { languages: ["Python", "SQL"], ml: ["XGBoost", "LSTM", "Transformers"], genai: ["AI agents", "RAG", "MCP"], data: ["PostgreSQL", "pgvector"], tools: ["FastAPI", "Streamlit", "Docker"] },
+  projects: [
+    { name: "GB electricity demand forecasting", type: "MSc dissertation" },
+    { name: "SupportPilot", type: "AI support agent" },
+    { name: "AI document pipeline", type: "Internship" }
+  ]
+};
+function renderJson(obj) {
+  var text = JSON.stringify(obj, null, 2)
+    .replace(/\[([^\[\]{}]*)\]/g, function (m, inner) {
+      return "[" + inner.split(",").map(function (x) { return x.trim(); }).join(", ") + "]";
+    })
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  return text.replace(/"([^"]*)"(:)?/g, function (m, g, colon) {
+    return colon ? '<span class="k">"' + g + '"</span>:' : '<span class="s">"' + g + '"</span>';
+  });
+}
+document.querySelectorAll(".tab").forEach(function (tab) {
+  tab.addEventListener("click", function () {
+    document.querySelectorAll(".tab").forEach(function (t) { t.setAttribute("aria-pressed", String(t === tab)); });
+    document.getElementById("resp-path").textContent = "GET /" + tab.dataset.ep;
+    document.getElementById("resp-body").innerHTML = renderJson(endpoints[tab.dataset.ep]);
+  });
+});
+</script>
+</body>
+</html>
